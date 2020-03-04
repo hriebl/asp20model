@@ -20,12 +20,16 @@ basis for your package.
 
 ## Important dates
 
-  - April 7, 10:00–15:00: Introductory session, project assignment
-  - May 5, 10:00–12:00: Q\&A session, feel free to ask technical,
-    statistical, and organizational questions
-  - June 9, 8:30–15:00: Intermediate presentations
-  - July 14, 8:30–15:00: Final presentations
-  - September 15: Submission deadline for the term papers
+  - Tuesday, April 7, 10:00–15:00, Blauer Turm / MZG 8.163: Introductory
+    session, project assignment
+  - Monday, May 4, 14:00–16:00, Blauer Turm / MZG 8.163: Q\&A session,
+    feel free to ask technical, statistical, and organizational
+    questions
+  - Friday, June 5, 8:30–15:00, Blauer Turm / MZG 8.163: Intermediate
+    presentations
+  - Friday, July 10, 8:30–15:00, Blauer Turm / MZG 8.163: Final
+    presentations
+  - Tuesday, September 15: Submission deadline for the term papers
 
 ## Technical & statistical prerequisites
 
