@@ -18,6 +18,10 @@ This git repository contains the `asp20model` package for R, which
 implements the location-scale regression model class and will be the
 basis for your package.
 
+**Very important:** If you are planning to take this course, **you need
+to preregister on Stud.IP before March 31.** Please follow this link:
+<https://studip.uni-goettingen.de/dispatch.php/course/details?sem_id=5b8822a839a628e8166648a57f4f1eac>.
+
 ## Important dates
 
   - Tuesday, April 7, 10:00–15:00, Blauer Turm / MZG 8.163: Introductory
