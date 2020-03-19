@@ -23,12 +23,18 @@ In this course, you are going work on a programming project in a group of three 
 
 This git repository contains the `asp20model` package for R, which implements the location-scale regression model class and will be the basis for your package.
 
-**Very important:** If you are planning to take this course, **you need to preregister on Stud.IP before March 31.** Please follow this link: https://studip.uni-goettingen.de/dispatch.php/course/details?sem_id=5b8822a839a628e8166648a57f4f1eac.
+**Please note:** If you are planning to take this course, **you need to preregister on Stud.IP before March 31.** Follow this link to sign up: https://studip.uni-goettingen.de/dispatch.php/course/details?sem_id=5b8822a839a628e8166648a57f4f1eac.
+
+**Update on the Coronavirus:** Unsurprisingly, the Coronavirus crisis makes some changes to this course necessary. All previously announced dates remain valid, but I am going to offer the introductory session and the Q&A session as YouTube livestreams. See below for the links. The intermediate and final presentations might be replaced with short written reports, depending on the further developments. I am going to make a final decision on the presentations before the Q&A session on May 4.
 
 ## Important dates
 
-- Tuesday, April 7, 10:00--15:00, Blauer Turm / MZG 8.163: Introductory session, project assignment
-- Monday, May 4, 14:00--16:00, Blauer Turm / MZG 8.163: Q&A session, feel free to ask technical, statistical, and organizational questions
+- Tuesday, April 7, 10:00--15:00, ~~Blauer Turm / MZG 8.163~~: Introductory session, project assignment \
+  YouTube livestream: https://youtu.be/-a02j6YTxKw \
+  CodiMD pad for questions and comments: https://pad.gwdg.de/w1Zmben3TVujERfmsX-w2Q?both
+- Monday, May 4, 14:00--16:00, ~~Blauer Turm / MZG 8.163~~: Q&A session, feel free to ask technical, statistical, and organizational questions \
+  YouTube livestream: https://youtu.be/vi2BqiDUCFI \
+  CodiMD pad for questions and comments: https://pad.gwdg.de/-mhmOxvTTCeJ7INEBMVD1Q?both
 - Friday, June 5, 8:30--15:00, Blauer Turm / MZG 8.163: Intermediate presentations
 - Friday, July 10, 8:30--15:00, Blauer Turm / MZG 8.163: Final presentations
 - Tuesday, September 15: Submission deadline for the term papers
@@ -47,7 +53,7 @@ The `asp20model` package is hosted on https://gitlab.gwdg.de (the GitLab instanc
 
 GitLab is an online platform where you can host git repositories, very similar to GitHub, and git is a popular version control system for software development. Systematic, version-controlled software development is an essential component of this course, so if you are not yet familiar with git, please take a look at the git chapter in [4], available online: http://r-pkgs.had.co.nz/git.html.
 
-**Another note:** Your code will only be visible to me, the project supervisors, and your fellow students. Feel free to make mistakes and ask questions!
+**Please note:** Your code will only be visible to me, the project supervisors, and your fellow students. Feel free to make mistakes and ask questions!
 
 ### Location-scale regression
 
