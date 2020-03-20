@@ -31,10 +31,10 @@ This git repository contains the `asp20model` package for R, which implements th
 
 - Tuesday, April 7, 10:00--15:00, ~~Blauer Turm / MZG 8.163~~: Introductory session, project assignment \
   YouTube livestream: https://youtu.be/-a02j6YTxKw \
-  CodiMD pad for questions and comments: https://pad.gwdg.de/w1Zmben3TVujERfmsX-w2Q?both
+  Rocket.Chat channel for questions and comments: https://chat.gwdg.de/channel/asp20
 - Monday, May 4, 14:00--16:00, ~~Blauer Turm / MZG 8.163~~: Q&A session, feel free to ask technical, statistical, and organizational questions \
   YouTube livestream: https://youtu.be/vi2BqiDUCFI \
-  CodiMD pad for questions and comments: https://pad.gwdg.de/-mhmOxvTTCeJ7INEBMVD1Q?both
+  Rocket.Chat channel for questions and comments: https://chat.gwdg.de/channel/asp20
 - Friday, June 5, 8:30--15:00, Blauer Turm / MZG 8.163: Intermediate presentations
 - Friday, July 10, 8:30--15:00, Blauer Turm / MZG 8.163: Final presentations
 - Tuesday, September 15: Submission deadline for the term papers
