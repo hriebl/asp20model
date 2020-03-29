@@ -54,6 +54,7 @@ model$grad()
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LocationScaleRegression$new(
@@ -100,6 +101,7 @@ LocationScaleRegression$new(y ~ 1)
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-loglik"></a>}}
+\if{latex}{\out{\hypertarget{method-loglik}{}}}
 \subsection{Method \code{loglik()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LocationScaleRegression$loglik()}\if{html}{\out{</div>}}
@@ -127,6 +129,7 @@ model$loglik()
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-grad"></a>}}
+\if{latex}{\out{\hypertarget{method-grad}{}}}
 \subsection{Method \code{grad()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LocationScaleRegression$grad(parameters = c("beta", "gamma"))}\if{html}{\out{</div>}}
@@ -162,6 +165,7 @@ model$grad()
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
