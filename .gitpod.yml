@@ -1,7 +1,7 @@
 image:
   file: .gitpod.Dockerfile
 tasks:
-  - init: R -e "devtools::install_local()"
+  - command: R -e "devtools::install_local()"
 vscode:
   extensions:
     - Ikuyadeu.r@1.2.7:k8t38ebpUaF/B6XvBJ2Dtw==
