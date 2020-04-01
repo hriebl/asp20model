@@ -12,11 +12,24 @@ model <- LocationScaleRegression$new(y ~ x1 + x3, ~ x2 + x3)
 
 f <- function(x) {
   model <- model$clone()
-  model$parameters$beta <- x[seq_along(model$parameters$beta)]
-  model$parameters$gamma <- x[-seq_along(model$parameters$beta)]
+  model$beta <- x
   model$loglik()
 }
 
-test_that("gradient works", {
-  expect_equivalent(unlist(model$grad()), grad(f, unlist(model$parameters)))
+test_that("beta gradient works", {
+  expect_equivalent(model$grad_beta(), grad(f, model$beta))
+})
+
+f <- function(x) {
+  model <- model$clone()
+  model$gamma <- x
+  model$loglik()
+}
+
+test_that("gamma gradient works", {
+  expect_equivalent(model$grad_gamma(), grad(f, model$gamma))
+})
+
+test_that("gradient descent does not throw an error", {
+  expect_error(gradient_descent(model, verbose = TRUE), NA)
 })

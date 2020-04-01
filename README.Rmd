@@ -103,37 +103,43 @@ Using the data from the plot above, we can set up a location-scale regression mo
 
 ```{r loglik1}
 model <- LocationScaleRegression$new(y ~ x, ~ x)
-model$parameters
+model$beta
+model$gamma
 model$loglik()
 ```
 
 Now, let's update the parameter values manually and see how the log-likelihood changes:
 
 ```{r loglik2}
-model$parameters$beta <- c(0.1, 0.1)
+model$beta <- c(0.1, 0.1)
 model$loglik()
 ```
 
 For most inference algorithms, we also need the gradient of the log-likelihood with respect to the parameters, which we can obtain with the `grad()` method:
 
 ```{r grad}
-model$grad()
+model$grad_beta()
+model$grad_gamma()
 ```
 
 Finally, the `asp20model` package also comes with a simple [gradient descent algorithm](https://en.wikipedia.org/wiki/Gradient_descent) for maximum likelihood inference. Let's apply it to our model:
 
 ```{r graddesc1}
 gradient_descent(model)
-model$parameters
-model$grad()
+model$beta
+model$gamma
+model$grad_beta()
+model$grad_gamma()
 ```
 
 Whoops, that didn't work very well! The algorithm didn't converge, the estimated parameters are far away from the true values we used to simulate the data (\$`\hat{\boldsymbol{\beta}}`\$ should be close to (0, 1), \$`\hat{\boldsymbol{\gamma}}`\$ should be close to (-3, 2)), and the gradient is not close to 0. Let's try again with a smaller step size and more iterations:
 
 ```{r graddesc2}
 gradient_descent(model, stepsize = 1e-06, maxit = 500000)
-model$parameters
-model$grad()
+model$beta
+model$gamma
+model$grad_beta()
+model$grad_gamma()
 ```
 
 These results do look better, but they also show how inefficient the gradient descent algorithm is. The algorithm took more than a quarter **million** iterations to converge!

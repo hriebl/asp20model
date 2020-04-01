@@ -1,11 +1,13 @@
 #' R6 class for location-scale regression models
 #'
-#' This model class assumes a normally distributed response variable with one
-#' linear predictor for the mean and one for the standard deviation. The linear
-#' predictors for the mean and the standard deviation are called \eqn{X\beta}
-#' and \eqn{Z\gamma} respectively. The standard deviation uses a log link.
+#' This model class assumes a normally distributed response variable with
+#' one linear predictor for the location (i.e. the mean) and one for the scale
+#' (i.e. the standard deviation). The linear predictors for the location and
+#' the scale are called \eqn{X\beta} and \eqn{Z\gamma} respectively. The scale
+#' uses a log link.
 #'
-#' @field parameters A named list of the `beta` and `gamma` parameters.
+#' @field beta A numeric vector with the `beta` parameters.
+#' @field gamma A numeric vector with the `gamma` parameters.
 #'
 #' @importFrom R6 R6Class
 #' @export
@@ -13,20 +15,19 @@
 LocationScaleRegression <- R6Class(
   classname = "LocationScaleRegression",
   public = list(
-    parameters = list(
-      beta = numeric(),
-      gamma = numeric()
-    ),
+    beta = numeric(),
+    gamma = numeric(),
 
     #' @details
     #' Create a new `LocationScaleRegression` object.
     #'
-    #' @param mformula A two-sided formula with the response variable on the
-    #'                 LHS and the predictor for the mean on the RHS.
-    #' @param sformula A one-sided formula with the predictor for the standard
-    #'                 deviation.
+    #' @param location A two-sided formula with the response variable on the
+    #'                 LHS and the predictor for the location (i.e. the mean)
+    #'                 on the RHS.
+    #' @param scale A one-sided formula with the predictor for the scale
+    #'              (i.e. the standard deviation) on the RHS.
     #' @param data A data frame (or list or environment) in which to evaluate
-    #'             the formulas.
+    #'             the `location` and `scale` formulas.
     #' @param ... Passed on to [stats::model.matrix()].
     #'
     #' @return
@@ -38,25 +39,24 @@ LocationScaleRegression <- R6Class(
     #'
     #' @importFrom stats model.matrix
 
-    initialize = function(mformula,
-                          sformula = ~1,
-                          data = environment(mformula),
+    initialize = function(location,
+                          scale = ~1,
+                          data = environment(location),
                           ...) {
-      private$y <- eval(mformula[[2]], data, environment(mformula))
-      private$X <- model.matrix(mformula, data, ...)
+      scale <- update(scale, paste(location[[2]], "~ ."))
+      private$y <- eval(location[[2]], data, environment(location))
+      private$X <- model.matrix(location, data, ...)
+      private$Z <- model.matrix(scale, data, ...)
 
-      sformula <- update(sformula, paste(mformula[[2]], "~ ."))
-      private$Z <- model.matrix(sformula, data, ...)
-
-      self$parameters$beta <- rep.int(0, ncol(private$X))
-      self$parameters$gamma <- rep.int(0, ncol(private$Z))
+      self$beta <- rep.int(0, ncol(private$X))
+      self$gamma <- rep.int(0, ncol(private$Z))
 
       invisible(self)
     },
 
     #' @details
-    #' Returns the log-likelihood of a `LocationScaleRegression` object at the
-    #' current parameter values.
+    #' Returns the log-likelihood of a `LocationScaleRegression` object
+    #' at the current parameter values.
     #'
     #' @return
     #' A single number.
@@ -69,51 +69,52 @@ LocationScaleRegression <- R6Class(
     #' @importFrom stats dnorm
 
     loglik = function() {
-      mean <- drop(private$X %*% self$parameters$beta)
-      sd <- exp(drop(private$Z %*% self$parameters$gamma))
-      sum(dnorm(private$y, mean, sd, log = TRUE))
+      location <- drop(private$X %*% self$beta)
+      scale <- exp(drop(private$Z %*% self$gamma))
+
+      sum(dnorm(private$y, location, scale, log = TRUE))
     },
 
     #' @details
     #' Returns the gradient of the log-likelihood of a
-    #' `LocationScaleRegression` object at the current parameter values.
-    #'
-    #' @param parameters The names of the parameter blocks with respect to
-    #'                   which the gradient should be computed. Either `"beta"`
-    #'                   or `"gamma"` or both.
+    #' `LocationScaleRegression` object with respect to \eqn{\beta}
+    #' at the current parameter values.
     #'
     #' @return
-    #' A named list of numeric vectors.
+    #' A numeric vector.
     #'
     #' @examples
     #' y <- rnorm(30)
     #' model <- LocationScaleRegression$new(y ~ 1)
-    #' model$grad()
+    #' model$grad_beta()
 
-    grad = function(parameters = c("beta", "gamma")) {
-      y <- private$y
-      X <- private$X
-      Z <- private$Z
-      beta <- self$parameters$beta
-      gamma <- self$parameters$gamma
+    grad_beta = function() {
+      location <- drop(private$X %*% self$beta)
+      scale <- exp(drop(private$Z %*% self$gamma))
+      resid <- private$y - location
 
-      mean <- drop(X %*% beta)
-      sd <- exp(drop(Z %*% gamma))
-      y0 <- y - mean
+      drop((resid / scale^2) %*% private$X)
+    },
 
-      out <- lapply(parameters, function(parameter) {
-        if (parameter == "beta") {
-          drop((y0 / sd^2) %*% X)
-        } else if (parameter == "gamma") {
-          drop(((y0 / sd)^2 - 1) %*% Z)
-        } else {
-          NA
-        }
-      })
+    #' @details
+    #' Returns the gradient of the log-likelihood of a
+    #' `LocationScaleRegression` object with respect to \eqn{\gamma}
+    #' at the current parameter values.
+    #'
+    #' @return
+    #' A numeric vector.
+    #'
+    #' @examples
+    #' y <- rnorm(30)
+    #' model <- LocationScaleRegression$new(y ~ 1)
+    #' model$grad_gamma()
 
-      names(out) <- parameters
+    grad_gamma = function() {
+      location <- drop(private$X %*% self$beta)
+      scale <- exp(drop(private$Z %*% self$gamma))
+      resid <- private$y - location
 
-      out
+      drop(((resid / scale)^2 - 1) %*% private$Z)
     }
   ),
   private = list(
@@ -131,7 +132,7 @@ LocationScaleRegression <- R6Class(
 #' object.
 #'
 #' @param model A [`LocationScaleRegression`] object.
-#' @param stepsize The scaling factor of the gradient.
+#' @param stepsize The scaling factor for the gradient.
 #' @param maxit The maximum number of iterations.
 #' @param abstol The absolute convergence tolerance. The algorithm stops if the
 #'               absolute value of the gradient drops below this value.
@@ -152,21 +153,22 @@ gradient_descent <- function(model,
                              maxit = 1000,
                              abstol = 0.001,
                              verbose = FALSE) {
-  grad <- model$grad()
+  grad_beta <- model$grad_beta()
+  grad_gamma <- model$grad_gamma()
 
   for (i in seq_len(maxit)) {
-    for (p in seq_along(model$parameters)) {
-      model$parameters[[p]] <- model$parameters[[p]] + stepsize * grad[[p]]
-    }
+    model$beta <- model$beta + stepsize * grad_beta
+    model$gamma <- model$gamma + stepsize * grad_gamma
 
-    grad <- model$grad()
+    grad_beta <- model$grad_beta()
+    grad_gamma <- model$grad_gamma()
 
     if (verbose) {
-      par_msg <- unlist(model$parameters)
+      par_msg <- c(model$beta, model$gamma)
       par_msg <- format(par_msg, trim = TRUE, digits = 3)
       par_msg <- paste(par_msg, collapse = " ")
 
-      grad_msg <- unlist(grad)
+      grad_msg <- c(grad_beta, grad_gamma)
       grad_msg <- format(grad_msg, trim = TRUE, digits = 3)
       grad_msg <- paste(grad_msg, collapse = " ")
 
@@ -181,7 +183,7 @@ gradient_descent <- function(model,
       )
     }
 
-    if (all(abs(unlist(grad)) <= abstol)) break
+    if (all(abs(c(grad_beta, grad_gamma)) <= abstol)) break
   }
 
   message("Finishing after ", i, " iterations")

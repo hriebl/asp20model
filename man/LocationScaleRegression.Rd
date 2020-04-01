@@ -4,10 +4,11 @@
 \alias{LocationScaleRegression}
 \title{R6 class for location-scale regression models}
 \description{
-This model class assumes a normally distributed response variable with one
-linear predictor for the mean and one for the standard deviation. The linear
-predictors for the mean and the standard deviation are called \eqn{X\beta}
-and \eqn{Z\gamma} respectively. The standard deviation uses a log link.
+This model class assumes a normally distributed response variable with
+one linear predictor for the location (i.e. the mean) and one for the scale
+(i.e. the standard deviation). The linear predictors for the location and
+the scale are called \eqn{X\beta} and \eqn{Z\gamma} respectively. The scale
+uses a log link.
 }
 \examples{
 
@@ -29,17 +30,27 @@ model$loglik()
 
 
 ## ------------------------------------------------
-## Method `LocationScaleRegression$grad`
+## Method `LocationScaleRegression$grad_beta`
 ## ------------------------------------------------
 
 y <- rnorm(30)
 model <- LocationScaleRegression$new(y ~ 1)
-model$grad()
+model$grad_beta()
+
+## ------------------------------------------------
+## Method `LocationScaleRegression$grad_gamma`
+## ------------------------------------------------
+
+y <- rnorm(30)
+model <- LocationScaleRegression$new(y ~ 1)
+model$grad_gamma()
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{parameters}}{A named list of the \code{beta} and \code{gamma} parameters.}
+\item{\code{beta}}{A numeric vector with the \code{beta} parameters.}
+
+\item{\code{gamma}}{A numeric vector with the \code{gamma} parameters.}
 }
 \if{html}{\out{</div>}}
 }
@@ -48,7 +59,8 @@ model$grad()
 \itemize{
 \item \href{#method-new}{\code{LocationScaleRegression$new()}}
 \item \href{#method-loglik}{\code{LocationScaleRegression$loglik()}}
-\item \href{#method-grad}{\code{LocationScaleRegression$grad()}}
+\item \href{#method-grad_beta}{\code{LocationScaleRegression$grad_beta()}}
+\item \href{#method-grad_gamma}{\code{LocationScaleRegression$grad_gamma()}}
 \item \href{#method-clone}{\code{LocationScaleRegression$clone()}}
 }
 }
@@ -58,9 +70,9 @@ model$grad()
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LocationScaleRegression$new(
-  mformula,
-  sformula = ~1,
-  data = environment(mformula),
+  location,
+  scale = ~1,
+  data = environment(location),
   ...
 )}\if{html}{\out{</div>}}
 }
@@ -68,14 +80,15 @@ model$grad()
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{mformula}}{A two-sided formula with the response variable on the
-LHS and the predictor for the mean on the RHS.}
+\item{\code{location}}{A two-sided formula with the response variable on the
+LHS and the predictor for the location (i.e. the mean)
+on the RHS.}
 
-\item{\code{sformula}}{A one-sided formula with the predictor for the standard
-deviation.}
+\item{\code{scale}}{A one-sided formula with the predictor for the scale
+(i.e. the standard deviation) on the RHS.}
 
 \item{\code{data}}{A data frame (or list or environment) in which to evaluate
-the formulas.}
+the \code{location} and \code{scale} formulas.}
 
 \item{\code{...}}{Passed on to \code{\link[stats:model.matrix]{stats::model.matrix()}}.}
 }
@@ -108,8 +121,8 @@ LocationScaleRegression$new(y ~ 1)
 }
 
 \subsection{Details}{
-Returns the log-likelihood of a \code{LocationScaleRegression} object at the
-current parameter values.
+Returns the log-likelihood of a \code{LocationScaleRegression} object
+at the current parameter values.
 }
 
 \subsection{Returns}{
@@ -128,35 +141,55 @@ model$loglik()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-grad"></a>}}
-\if{latex}{\out{\hypertarget{method-grad}{}}}
-\subsection{Method \code{grad()}}{
+\if{html}{\out{<a id="method-grad_beta"></a>}}
+\if{latex}{\out{\hypertarget{method-grad_beta}{}}}
+\subsection{Method \code{grad_beta()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LocationScaleRegression$grad(parameters = c("beta", "gamma"))}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LocationScaleRegression$grad_beta()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{parameters}}{The names of the parameter blocks with respect to
-which the gradient should be computed. Either \code{"beta"}
-or \code{"gamma"} or both.}
-}
-\if{html}{\out{</div>}}
-}
 \subsection{Details}{
 Returns the gradient of the log-likelihood of a
-\code{LocationScaleRegression} object at the current parameter values.
+\code{LocationScaleRegression} object with respect to \eqn{\beta}
+at the current parameter values.
 }
 
 \subsection{Returns}{
-A named list of numeric vectors.
+A numeric vector.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{y <- rnorm(30)
 model <- LocationScaleRegression$new(y ~ 1)
-model$grad()
+model$grad_beta()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-grad_gamma"></a>}}
+\if{latex}{\out{\hypertarget{method-grad_gamma}{}}}
+\subsection{Method \code{grad_gamma()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LocationScaleRegression$grad_gamma()}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+Returns the gradient of the log-likelihood of a
+\code{LocationScaleRegression} object with respect to \eqn{\gamma}
+at the current parameter values.
+}
+
+\subsection{Returns}{
+A numeric vector.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{y <- rnorm(30)
+model <- LocationScaleRegression$new(y ~ 1)
+model$grad_gamma()
 }
 \if{html}{\out{</div>}}
 

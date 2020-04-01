@@ -156,11 +156,9 @@ initial state (i.e. with all parameters set to 0):
 
 ``` r
 model <- LocationScaleRegression$new(y ~ x, ~ x)
-model$parameters
-#> $beta
+model$beta
 #> [1] 0 0
-#> 
-#> $gamma
+model$gamma
 #> [1] 0 0
 model$loglik()
 #> [1] -552.6567
@@ -170,7 +168,7 @@ Now, let’s update the parameter values manually and see how the
 log-likelihood changes:
 
 ``` r
-model$parameters$beta <- c(0.1, 0.1)
+model$beta <- c(0.1, 0.1)
 model$loglik()
 #> [1] -516.8169
 ```
@@ -180,12 +178,10 @@ log-likelihood with respect to the parameters, which we can obtain with
 the `grad()` method:
 
 ``` r
-model$grad()
-#> $beta
+model$grad_beta()
 #> (Intercept)           x 
-#>    174.5098    125.7585 
-#> 
-#> $gamma
+#>    174.5098    125.7585
+model$grad_gamma()
 #> (Intercept)           x 
 #>   -385.3047   -157.7906
 ```
@@ -197,20 +193,16 @@ maximum likelihood inference. Let’s apply it to our model:
 ``` r
 gradient_descent(model)
 #> Finishing after 1000 iterations
-model$parameters
-#> $beta
+model$beta
 #> (Intercept)           x 
-#>    5.891795    4.627923 
-#> 
-#> $gamma
+#>    5.891795    4.627923
+model$gamma
 #> (Intercept)           x 
 #>   1.7398635   0.5971787
-model$grad()
-#> $beta
+model$grad_beta()
 #> (Intercept)           x 
-#>   -66.29382   -28.97002 
-#> 
-#> $gamma
+#>   -66.29382   -28.97002
+model$grad_gamma()
 #> (Intercept)           x 
 #>   -4.136286  -12.307770
 ```
@@ -225,20 +217,16 @@ more iterations:
 ``` r
 gradient_descent(model, stepsize = 1e-06, maxit = 500000)
 #> Finishing after 260393 iterations
-model$parameters
-#> $beta
+model$beta
 #>  (Intercept)            x 
-#> -0.003708951  1.010004226 
-#> 
-#> $gamma
+#> -0.003708951  1.010004226
+model$gamma
 #> (Intercept)           x 
 #>   -3.040401    2.123791
-model$grad()
-#> $beta
+model$grad_beta()
 #>   (Intercept)             x 
-#> -8.143048e-07  3.635703e-06 
-#> 
-#> $gamma
+#> -8.143048e-07  3.635703e-06
+model$grad_gamma()
 #>   (Intercept)             x 
 #> -0.0005285036  0.0009999457
 ```

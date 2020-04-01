@@ -15,7 +15,7 @@ gradient_descent(
 \arguments{
 \item{model}{A \code{\link{LocationScaleRegression}} object.}
 
-\item{stepsize}{The scaling factor of the gradient.}
+\item{stepsize}{The scaling factor for the gradient.}
 
 \item{maxit}{The maximum number of iterations.}
 
