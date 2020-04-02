@@ -2,8 +2,7 @@ FROM gitpod/workspace-full
 
 USER gitpod
 
-RUN brew install R && \
-  echo 'options(repos = c(CRAN = "https://cloud.r-project.org/"))' >> ~/.Rprofile && \
-  R -e 'install.packages(c("devtools", "numDeriv", "R6", "roxygen2", "testthat"))'
-
-RUN sudo ln -s /home/linuxbrew/.linuxbrew/bin/R /usr/bin/R
+RUN sudo apt-get update && \
+  sudo apt-get install -y r-base && \
+  sudo rm -rf /var/lib/apt/lists/* && \
+  R -e "install.packages(c('devtools', 'numDeriv', 'R6', 'roxygen2', 'testthat'))"
