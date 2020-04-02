@@ -2,7 +2,14 @@ FROM gitpod/workspace-full
 
 USER gitpod
 
-RUN sudo apt-get update && \
-  sudo apt-get install -y r-base && \
-  sudo rm -rf /var/lib/apt/lists/* && \
-  R -e "install.packages(c('devtools', 'numDeriv', 'R6', 'roxygen2', 'testthat'))"
+RUN sudo apt-get update
+
+RUN sudo apt-get install -t unstable -y \
+  r-base \
+  r-cran-devtools \
+  r-cran-numDeriv \
+  r-cran-R6 \
+  r-cran-roxygen2 \
+  r-cran-testthat
+
+RUN sudo rm -rf /var/lib/apt/lists/*
